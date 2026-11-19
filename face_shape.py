@@ -83,7 +83,6 @@ def measure(lm, image):
         "forehead": d(103, 332),
         "cheek": d(234, 454),
         "jaw": d(172, 397),
-        "temples": d(127, 356),
         "pd": d(468, 473),
         "mm": IRIS_MM / iris_px,
     }
@@ -96,14 +95,8 @@ def report(m):
         f"length/cheek {m['length'] / c:.2f}  forehead/cheek {m['forehead'] / c:.2f}  jaw/cheek {m['jaw'] / c:.2f}",
         f"Face shape (rough): {shape} -> {frames(shape)}",
         f"Approx. pupillary distance: {m['pd'] * m['mm']:.0f} mm",
-        frame_size(max(m["cheek"], m["temples"]) * m["mm"]),
     ]
 
-
-def frame_size(width_mm):
-    # ponytail: lens ~ (total - bridge 18 - two hinge pieces ~9 each) / 2; iris scale is +-5%
-    lens = round((width_mm - 36) / 2)
-    return f"Face width ~{width_mm:.0f} mm (+-{width_mm * 0.05:.0f}) -> frame total {width_mm - 5:.0f}-{width_mm + 5:.0f} mm, lens ~{lens - 1}-{lens + 1}, bridge 16-20"
 
 
 def average(samples):
@@ -148,7 +141,6 @@ def check():
     assert classify(140, 85, 100, 85) == "oval"
     assert classify(110, 85, 100, 85) == "round"
     assert "men: " in frames("oval") and "women: " in frames("oval")
-    assert "lens ~51-53" in frame_size(140)  # 52-18 lenses on a 140 mm frame
     print("ok")
 
 
